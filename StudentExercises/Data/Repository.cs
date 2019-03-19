@@ -117,5 +117,57 @@ namespace StudentExercises.Data
                 }
             }
         }
+
+        //=======================================================================================
+        //INSTRUCTORS:
+        //=======================================================================================
+
+        public List<Instructor> GetAllInstructors()
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "SELECT i.Id, i.FirstName, i.LastName, i.SlackHandle,c.Id AS CohortID, c.CohortName FROM Instructor i INNER JOIN Cohort c ON i.CohortId = c.id";
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    List<Instructor> instructors = new List<Instructor>();
+
+                    while(reader.Read())
+                    {
+                        int idColumnPosition = reader.GetOrdinal("Id");
+
+                        int idValue = reader.GetInt32(idColumnPosition);
+
+                        int firstNameColumnPosition = reader.GetOrdinal("FirstName");
+                        string instFirstNameValue = reader.GetString(firstNameColumnPosition);
+
+                        int lastNameColumnPosition = reader.GetOrdinal("LastName");
+                        string instLastNameValue = reader.GetString(lastNameColumnPosition);
+
+                        int slackHandleColumnPosition = reader.GetOrdinal("SlackHandle");
+                        string slackHandleValue = reader.GetString(lastNameColumnPosition);
+
+                        int cohoritIdColumnPosition = reader.GetOrdinal("CohortId");
+                        int cohortId = reader.GetInt32(cohoritIdColumnPosition);
+
+                        int cohortNameColumnPosition = reader.GetOrdinal("CohortName");
+                        string cohortName = reader.GetString(cohortNameColumnPosition);
+
+
+
+                        Cohort instructorsCohort = new Cohort(cohortId, cohortName);
+
+                        Instructor instructor = new Instructor(instFirstNameValue, instLastNameValue, slackHandleValue, instructorsCohort);
+
+                        instructors.Add(instructor);
+                    }
+                    reader.Close();
+                    return instructors;
+                }
+            }
+        }
     }
 }

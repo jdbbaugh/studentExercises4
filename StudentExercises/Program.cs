@@ -40,7 +40,7 @@ namespace StudentExercises
             Console.WriteLine("ADD NEW EXERCISE-----------------------------");
             Console.WriteLine();
             Console.WriteLine();
-            Console.WriteLine("DONE-----------------------------");
+            Console.WriteLine("ADDED-----------------------------");
 
             Exercise dotNetLesson = new Exercise
             {
@@ -49,7 +49,7 @@ namespace StudentExercises
             };
             repository.AddExercise(dotNetLesson);
 
-            Console.WriteLine("ALL EXERCISES WITH Employees and Departments ADDED---------------------");
+            Console.WriteLine("ALL EXERCISES INCLUDING NEW ADDED ONE---------------------");
 
             List<Exercise> exercises2 = repository.GetAllExercises();
 
@@ -58,6 +58,21 @@ namespace StudentExercises
 
                 Console.WriteLine($"{assignment.Name} using {assignment.CodeLanguage}");
             }
+
+            //=================================================================================================
+            // INSTRUCTORS
+            //=================================================================================================
+
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("ALL INSTRUCTORS PLUS THEIR COHORT -----------------------------");
+            List<Instructor> allInstructorsList = repository.GetAllInstructors();
+
+            foreach (Instructor instructor in allInstructorsList)
+            {
+                Console.WriteLine($"{instructor.FirstName} {instructor.LastName} is the instructor for {instructor.CohortNumber.Name}");
+            }
+
 
 
             Console.ReadKey();

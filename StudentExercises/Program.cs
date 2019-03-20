@@ -39,8 +39,9 @@ namespace StudentExercises
             Console.WriteLine();
             Console.WriteLine("ADD NEW EXERCISE-----------------------------");
             Console.WriteLine();
-            Console.WriteLine();
             Console.WriteLine("ADDED-----------------------------");
+            Console.WriteLine();
+            Console.WriteLine();
 
             Exercise dotNetLesson = new Exercise
             {
@@ -69,6 +70,41 @@ namespace StudentExercises
             List<Instructor> allInstructorsList = repository.GetAllInstructors();
 
             foreach (Instructor instructor in allInstructorsList)
+            {
+                Console.WriteLine($"{instructor.FirstName} {instructor.LastName} is the instructor for {instructor.CohortNumber.Name}");
+            }
+
+
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("SHOW ALL COHORTS -----------------------------");
+
+            List<Cohort> allCohorts = repository.GetallCohorts();
+
+            //?????????????????????????????????????????????????
+            foreach(Cohort cohort in allCohorts)
+            {
+                Console.WriteLine($"{cohort.Name} is {cohort.Id}");
+            }
+
+            Cohort steveCohort = new Cohort(2, "Cohort 28");
+
+
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("ADD A NEW INSTRUCTOR WITH A COHORT ASSINGMENT -----------------------------");
+
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("NOW SHOW ALL INSTRUCTORS AGAIN...BUT WITH STEVE -----------------------------");
+
+            Instructor newInstructor = new Instructor("Steve", "Brownlee", "StB", steveCohort);
+
+            repository.AddInstructor(newInstructor);
+
+            List<Instructor> withNewInstructorsList = repository.GetAllInstructors();
+
+            foreach (Instructor instructor in withNewInstructorsList)
             {
                 Console.WriteLine($"{instructor.FirstName} {instructor.LastName} is the instructor for {instructor.CohortNumber.Name}");
             }

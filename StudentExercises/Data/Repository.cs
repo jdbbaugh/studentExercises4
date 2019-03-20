@@ -169,5 +169,57 @@ namespace StudentExercises.Data
                 }
             }
         }
+        public void AddInstructor(Instructor newInstructor)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"INSERT INTO Instructor (FirstName, LastName, SlackHandle, CohortId) VALUES (@firstName, @lastName, @slackHandle, @cohortId)";
+                    cmd.Parameters.Add(new SqlParameter("@firstName", newInstructor.FirstName));
+                    cmd.Parameters.Add(new SqlParameter("@lastName", newInstructor.LastName));
+                    cmd.Parameters.Add(new SqlParameter("@slackHandle", newInstructor.SlackHandle));
+                    cmd.Parameters.Add(new SqlParameter("@cohortId", 2));
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+        }
+
+        //====================================================================================
+        //Cohort
+        //====================================================================================
+        public List<Cohort> GetallCohorts()
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+
+                using(SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "SELECT Id, CohortName FROM Cohort";
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    List<Cohort> cohorts = new List<Cohort>();
+
+                    while (reader.Read())
+                    {
+                        int idColumnPosition = reader.GetOrdinal("Id");
+                        int idValue = reader.GetInt32(idColumnPosition);
+
+                        int cohortNameColumnPosition = reader.GetOrdinal("CohortName");
+                        string cohortNameValue = reader.GetString(cohortNameColumnPosition);
+
+                        Cohort cohort = new Cohort(idValue, cohortNameValue);
+
+                        cohorts.Add(cohort);
+                    }
+                    reader.Close();
+                    return cohorts;
+                }
+            }
+        }
     }
 }

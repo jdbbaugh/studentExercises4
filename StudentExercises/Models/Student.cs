@@ -13,16 +13,5 @@ namespace StudentExercises.Models
 
         public Cohort CohortNumber { get; set; }
         public List<Exercise> CurrentExercises { get; set; }
-
-        public Student(string firstName, string lastName, string slackHandle, Cohort cohort)
-        {
-
-            FirstName = firstName;
-            LastName = lastName;
-            SlackHandle = slackHandle;
-            CohortNumber = cohort;
-            CurrentExercises = new List<Exercise>();
-            // cohort.Students.Add();
-        }
     }
 }

@@ -10,13 +10,5 @@ namespace StudentExercises.Models
         public string Name { get; set; }
         public List<Student> Students { get; set; }
         public List<Instructor> Instructors { get; set; }
-
-        public Cohort(int id, string name)
-        {
-            Id = Id;
-            Name = name;
-            Students = new List<Student>();
-            Instructors = new List<Instructor>();
-        }
     }
 }

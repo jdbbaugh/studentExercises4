@@ -80,14 +80,13 @@ namespace StudentExercises
             Console.WriteLine("SHOW ALL COHORTS -----------------------------");
 
             List<Cohort> allCohorts = repository.GetallCohorts();
-
-            //?????????????????????????????????????????????????
+            
             foreach(Cohort cohort in allCohorts)
             {
-                Console.WriteLine($"{cohort.Name} is {cohort.Id}");
+                Console.WriteLine($"{cohort.Name} ID is {cohort.Id}");
             }
 
-            Cohort steveCohort = new Cohort(2, "Cohort 28");
+            Cohort steveCohort = allCohorts[1];
 
 
             Console.WriteLine();
@@ -96,8 +95,9 @@ namespace StudentExercises
 
             Console.WriteLine();
             Console.WriteLine();
-            Console.WriteLine("NOW SHOW ALL INSTRUCTORS AGAIN...BUT WITH STEVE -----------------------------");
+            Console.WriteLine("NOW SHOW ALL INSTRUCTORS AGAIN...BUT WITH STEVE ADDED-----------------------------");
 
+            
             Instructor newInstructor = new Instructor("Steve", "Brownlee", "StB", steveCohort);
 
             repository.AddInstructor(newInstructor);
@@ -107,6 +107,35 @@ namespace StudentExercises
             foreach (Instructor instructor in withNewInstructorsList)
             {
                 Console.WriteLine($"{instructor.FirstName} {instructor.LastName} is the instructor for {instructor.CohortNumber.Name}");
+            }
+
+            //=================================================================================================
+            // STUDENT
+            //=================================================================================================
+            Console.WriteLine();
+            Console.WriteLine();
+
+            List<Student> assignTo = repository.GetAllStudents();
+            Console.WriteLine($"ASSIGN {assignTo[1].FirstName} {assignTo[1].LastName} {exercises2[5].Name} EXERCISE-----------------------------");
+
+            repository.AssignExerciseToStudent(assignTo[1], exercises2[5]);
+
+
+
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("ASSIGNED-----------------------------");
+
+
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("NOW SHOW ALL STUDENTS-----------------------------");
+
+            List<Student> studentsList = repository.GetAllStudents();
+
+            foreach(Student student in studentsList)
+            {
+                Console.WriteLine($"{student.FirstName} {student.LastName}");
             }
 
 

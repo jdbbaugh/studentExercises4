@@ -135,7 +135,7 @@ namespace StudentExercises
 
             foreach(Student student in studentsList)
             {
-                Console.WriteLine($"{student.FirstName} {student.LastName}");
+                Console.WriteLine($"{student.FirstName} {student.LastName} in {student.CohortNumber.Name} with the {student.CurrentExercises[0].Name} exercise");
             }
 
 

@@ -2,6 +2,7 @@
 using StudentExercises.Models;
 using System.Data.SqlClient;
 using System.Collections.Generic;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 
 namespace StudentExercises.Data
@@ -232,22 +233,34 @@ namespace StudentExercises.Data
         //STUDENT
         //====================================================================================
 
-        public List<Student> GetAllStudents()
+
+
+        public List<Student> GetAllStudentsOverkill()
         {
             using (SqlConnection conn = Connection)
             {
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = "SELECT i.Id, i.FirstName, i.LastName, i.SlackHandle,c.Id AS CohortID, c.CohortName FROM Student i INNER JOIN Cohort c ON i.CohortId = c.id";
+                    cmd.CommandText = "SELECT e.id AS ExerciseId, e.ExerciseName,e.ExerciseLanguage,s.Id AS StudentId,s.FirstName, s.LastName, s.SlackHandle, c.id AS CohortId, c.CohortName FROM Exercise e LEFT JOIN AssignedExercise a ON a.ExerciseId = e.Id LEFT JOIN Student s ON s.id = a.StudentId LEFT JOIN Cohort c ON c.id = s.CohortId WHERE s.Id is not null";
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     List<Student> students = new List<Student>();
+                    
 
                     while (reader.Read())
                     {
-                        int idColumnPosition = reader.GetOrdinal("Id");
-                        int idValue = reader.GetInt32(idColumnPosition);
+                        int exerciseIdColumnPosition = reader.GetOrdinal("ExerciseId");
+                        int exerciseIdValue = reader.GetInt32(exerciseIdColumnPosition);
+
+                        int exerciseNameColumnPosition = reader.GetOrdinal("ExerciseName");
+                        string exerciseNameValue = reader.GetString(exerciseNameColumnPosition);
+
+                        int exerciseLanguageColumnPosition = reader.GetOrdinal("ExerciseLanguage");
+                        string exerciseLanguageValue = reader.GetString(exerciseLanguageColumnPosition);
+
+                        int studentIdColumnPosition = reader.GetOrdinal("StudentId");
+                        int studentIdValue = reader.GetInt32(studentIdColumnPosition);
 
                         int stuFirstNameColumnPosition = reader.GetOrdinal("FirstName");
                         string stuFirstNameValue = reader.GetString(stuFirstNameColumnPosition);
@@ -270,13 +283,24 @@ namespace StudentExercises.Data
                             Name = stuCohortNameValue
                         };
 
+                        Exercise exercises = new Exercise()
+                        {
+                            Id = exerciseIdValue,
+                            Name = exerciseNameValue,
+                            CodeLanguage = exerciseLanguageValue
+                        };
+
+                        List<Exercise> studentclass = new List<Exercise>();
+                        studentclass.Add(exercises);
+
                         Student student = new Student
                         {
-                            Id = idValue,
+                            Id = studentIdValue,
                             FirstName = stuFirstNameValue,
                             LastName = stuLastNameValue,
                             SlackHandle = stuSlackNameValue,
-                            CohortNumber = stuCohort
+                            CohortNumber = stuCohort,
+                            CurrentExercises = studentclass
                         };
 
                         students.Add(student);
@@ -303,5 +327,90 @@ namespace StudentExercises.Data
             }
         }
 
+        public List<Student> GetAllStudents()
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "SELECT i.Id, i.FirstName, i.LastName, i.SlackHandle,c.Id AS CohortID, c.CohortName FROM Student i INNER JOIN Cohort c ON i.CohortId = c.id; ";
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    List<Student> students = new List<Student>();
+
+                    while (reader.Read())
+                    {
+                        int idColumnPosition = reader.GetOrdinal("Id");
+                        int idValue = reader.GetInt32(idColumnPosition);
+
+                        int firstNameColumnPosition = reader.GetOrdinal("FirstName");
+                        string firstNameValue = reader.GetString(firstNameColumnPosition);
+
+                        int lastNameColumnPosition = reader.GetOrdinal("LastName");
+                        string lastNameValue = reader.GetString(lastNameColumnPosition);
+
+                        int slackHandleColumnPosition = reader.GetOrdinal("SlackHandle");
+                        string slackHandleValue = reader.GetString(slackHandleColumnPosition);
+
+                        int cohortIdColumnPosition = reader.GetOrdinal("CohortID");
+                        int cohortIdValue = reader.GetInt32(cohortIdColumnPosition);
+
+                        int cohortNameColumnPosition = reader.GetOrdinal("CohortName");
+                        string cohortNameValue = reader.GetString(cohortNameColumnPosition);
+
+                        Cohort stuCohort = new Cohort
+                        {
+                            Id = cohortIdValue,
+                            Name = cohortNameValue
+                        };
+
+                        List<Exercise> bigListOExercises = listStudentExercises(firstNameValue, lastNameValue);
+
+
+
+                        Student student = new Student
+                        {
+                            Id = idValue,
+                            FirstName = firstNameValue,
+                            LastName = lastNameValue,
+                            SlackHandle = slackHandleValue,
+                            CohortNumber = stuCohort,
+                            CurrentExercises = bigListOExercises
+                        };
+
+                        students.Add(student);
+                    }
+                    reader.Close();
+                    return students;
+                }
+                }
+            }
+        //HEREREERERERERE-----------------------------------------------
+        public List<Exercise> listStudentExercises(string firstName, string lastName)
+        {
+            //ExercisesWithJavaScript() Student name spin through full list of name/Exercises and get them here somehow
+            List<Student> workPlease = this.GetAllStudentsOverkill();
+
+            List<Exercise> studentExercise = new List<Exercise>();
+
+            workPlease.ForEach(student =>
+            {
+                if (student.FirstName == firstName && student.LastName == lastName)
+                {
+
+                    foreach (Exercise exercise in student.CurrentExercises)
+                    {
+                        studentExercise.Add(exercise);
+                    }
+                }
+            });
+            return studentExercise;
+
+
+
+        }
+        }
+
     }
-}
+

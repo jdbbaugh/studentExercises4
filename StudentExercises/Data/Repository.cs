@@ -2,6 +2,7 @@
 using StudentExercises.Models;
 using System.Data.SqlClient;
 using System.Collections.Generic;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 
 namespace StudentExercises.Data
@@ -364,7 +365,7 @@ namespace StudentExercises.Data
                             Name = cohortNameValue
                         };
 
-                        listStudentExercises($"{firstNameValue} {lastNameValue}");
+                        List<Exercise> bigListOExercises = listStudentExercises(firstNameValue, lastNameValue);
 
 
 
@@ -375,7 +376,7 @@ namespace StudentExercises.Data
                             LastName = lastNameValue,
                             SlackHandle = slackHandleValue,
                             CohortNumber = stuCohort,
-                            CurrentExercises = 
+                            CurrentExercises = bigListOExercises
                         };
 
                         students.Add(student);
@@ -386,11 +387,30 @@ namespace StudentExercises.Data
                 }
             }
         //HEREREERERERERE-----------------------------------------------
-        public List<Exercise> listStudentExercises(string name)
+        public List<Exercise> listStudentExercises(string firstName, string lastName)
         {
+            //ExercisesWithJavaScript() Student name spin through full list of name/Exercises and get them here somehow
+            List<Student> workPlease = this.GetAllStudentsOverkill();
+
+            List<Exercise> studentExercise = new List<Exercise>();
+
+            workPlease.ForEach(student =>
+            {
+                if (student.FirstName == firstName && student.LastName == lastName)
+                {
+
+                    foreach (Exercise exercise in student.CurrentExercises)
+                    {
+                        studentExercise.Add(exercise);
+                    }
+                }
+            });
+            return studentExercise;
+
+
 
         }
         }
 
     }
-}
+

@@ -130,20 +130,30 @@ namespace StudentExercises
             Console.WriteLine();
             Console.WriteLine();
             Console.WriteLine("NOW SHOW ALL STUDENTS WITH COHORTS AND EXERCISES-----------------------------");
+
+           List<Student> studentsList = repository.GetAllStudents();
+
             
-            /*
-            List<Student> studentsList = repository.GetAllStudentsOverkill();
+            //List<Student> studentsList = repository.GetAllStudentsOverkill();
 
             //studentsList.Select()
             foreach (Student student in studentsList)
             {
-                Console.WriteLine($"{student.FirstName} {student.LastName} in {student.CohortNumber.Name} with the {student.CurrentExercises[0].Name} exercise");
+                Console.WriteLine($"{student.FirstName} {student.LastName} in {student.CohortNumber.Name} with the follwoing exercises");
+                Console.WriteLine("------------------------------------------------");
+
+                foreach (Exercise exercise in student.CurrentExercises)
+                {
+                    Console.WriteLine(exercise.Name);
+
+                }
+                Console.WriteLine();
             }
-            */
+            
 
 
-            
-            
+
+
 
 
 

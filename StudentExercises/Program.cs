@@ -115,7 +115,7 @@ namespace StudentExercises
             Console.WriteLine();
             Console.WriteLine();
 
-            List<Student> assignTo = repository.GetAllStudents();
+            List<Student> assignTo = repository.GetAllStudentsOverkill();
             Console.WriteLine($"ASSIGN {assignTo[1].FirstName} {assignTo[1].LastName} {exercises2[5].Name} EXERCISE-----------------------------");
 
             repository.AssignExerciseToStudent(assignTo[1], exercises2[5]);
@@ -129,14 +129,21 @@ namespace StudentExercises
 
             Console.WriteLine();
             Console.WriteLine();
-            Console.WriteLine("NOW SHOW ALL STUDENTS-----------------------------");
+            Console.WriteLine("NOW SHOW ALL STUDENTS WITH COHORTS AND EXERCISES-----------------------------");
+            
+            /*
+            List<Student> studentsList = repository.GetAllStudentsOverkill();
 
-            List<Student> studentsList = repository.GetAllStudents();
-
-            foreach(Student student in studentsList)
+            //studentsList.Select()
+            foreach (Student student in studentsList)
             {
                 Console.WriteLine($"{student.FirstName} {student.LastName} in {student.CohortNumber.Name} with the {student.CurrentExercises[0].Name} exercise");
             }
+            */
+
+
+            
+            
 
 
 

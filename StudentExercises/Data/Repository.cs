@@ -234,7 +234,7 @@ namespace StudentExercises.Data
 
 
 
-        public List<Student> GetAllStudents()
+        public List<Student> GetAllStudentsOverkill()
         {
             using (SqlConnection conn = Connection)
             {
@@ -324,6 +324,72 @@ namespace StudentExercises.Data
 
                 }
             }
+        }
+
+        public List<Student> GetAllStudents()
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "SELECT i.Id, i.FirstName, i.LastName, i.SlackHandle,c.Id AS CohortID, c.CohortName FROM Student i INNER JOIN Cohort c ON i.CohortId = c.id; ";
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    List<Student> students = new List<Student>();
+
+                    while (reader.Read())
+                    {
+                        int idColumnPosition = reader.GetOrdinal("Id");
+                        int idValue = reader.GetInt32(idColumnPosition);
+
+                        int firstNameColumnPosition = reader.GetOrdinal("FirstName");
+                        string firstNameValue = reader.GetString(firstNameColumnPosition);
+
+                        int lastNameColumnPosition = reader.GetOrdinal("LastName");
+                        string lastNameValue = reader.GetString(lastNameColumnPosition);
+
+                        int slackHandleColumnPosition = reader.GetOrdinal("SlackHandle");
+                        string slackHandleValue = reader.GetString(slackHandleColumnPosition);
+
+                        int cohortIdColumnPosition = reader.GetOrdinal("CohortID");
+                        int cohortIdValue = reader.GetInt32(cohortIdColumnPosition);
+
+                        int cohortNameColumnPosition = reader.GetOrdinal("CohortName");
+                        string cohortNameValue = reader.GetString(cohortNameColumnPosition);
+
+                        Cohort stuCohort = new Cohort
+                        {
+                            Id = cohortIdValue,
+                            Name = cohortNameValue
+                        };
+
+                        listStudentExercises($"{firstNameValue} {lastNameValue}");
+
+
+
+                        Student student = new Student
+                        {
+                            Id = idValue,
+                            FirstName = firstNameValue,
+                            LastName = lastNameValue,
+                            SlackHandle = slackHandleValue,
+                            CohortNumber = stuCohort,
+                            CurrentExercises = 
+                        };
+
+                        students.Add(student);
+                    }
+                    reader.Close();
+                    return students;
+                }
+                }
+            }
+        //HEREREERERERERE-----------------------------------------------
+        public List<Exercise> listStudentExercises(string name)
+        {
+
+        }
         }
 
     }

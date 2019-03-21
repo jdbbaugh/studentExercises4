@@ -319,8 +319,8 @@ namespace StudentExercises.Data
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"INSERT INTO AssignedExercise (ExerciseId, StudentId) VALUES (@exerciseId, @studentId)";
-                    cmd.Parameters.Add(new SqlParameter("@exerciseId", student.Id));
-                    cmd.Parameters.Add(new SqlParameter("@studentId", exercise.Id));
+                    cmd.Parameters.Add(new SqlParameter("@exerciseId", exercise.Id));
+                    cmd.Parameters.Add(new SqlParameter("@studentId", student.Id));
                     cmd.ExecuteNonQuery();
 
                 }

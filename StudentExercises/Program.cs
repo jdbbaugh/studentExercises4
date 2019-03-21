@@ -153,12 +153,8 @@ namespace StudentExercises
                 Console.WriteLine($"{student.CohortNumber.Name} {student.FirstName} {student.LastName} Exercises ToDo: {String.Join(", ", studentsAssignedExercises)}");
 
             }
-            
 
-
-
-
-
+            repository.assignToCohort(exercises[0], allCohorts[0]);
 
 
             Console.ReadKey();

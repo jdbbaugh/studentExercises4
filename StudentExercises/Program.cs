@@ -133,21 +133,25 @@ namespace StudentExercises
 
            List<Student> studentsList = repository.GetAllStudents();
 
-            
+            //================================================================================PROBABLY BETTER WAY
             //List<Student> studentsList = repository.GetAllStudentsOverkill();
+            //================================================================================
 
             //studentsList.Select()
             foreach (Student student in studentsList)
             {
-                Console.WriteLine($"{student.FirstName} {student.LastName} in {student.CohortNumber.Name} with the follwoing exercises");
-                Console.WriteLine("------------------------------------------------");
+                //Console.WriteLine($"{student.FirstName} {student.LastName} in {student.CohortNumber.Name} with the follwoing exercises");
+                Console.WriteLine();
+                List<string> studentsAssignedExercises = new List<string>();
 
                 foreach (Exercise exercise in student.CurrentExercises)
                 {
-                    Console.WriteLine(exercise.Name);
+                   // Console.WriteLine(exercise.Name);
+                    studentsAssignedExercises.Add(exercise.Name);
 
                 }
-                Console.WriteLine();
+                Console.WriteLine($"{student.CohortNumber.Name} {student.FirstName} {student.LastName} Exercises ToDo: {String.Join(", ", studentsAssignedExercises)}");
+
             }
             
 

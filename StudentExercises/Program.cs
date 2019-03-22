@@ -153,12 +153,30 @@ namespace StudentExercises
                 Console.WriteLine($"{student.CohortNumber.Name} {student.FirstName} {student.LastName} Exercises ToDo: {String.Join(", ", studentsAssignedExercises)}");
 
             }
-            
+
+            repository.assignToCohort(exercises[5], allCohorts[0]);
+
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine("See cohort 28 students ------ jimbo is assigned new exercise carlot.... julia is not because she already had been assigned it");
 
 
+            List<Student> refreshStudentsList = repository.GetAllStudents();
+            foreach (Student student in refreshStudentsList)
+            {
+                //Console.WriteLine($"{student.FirstName} {student.LastName} in {student.CohortNumber.Name} with the follwoing exercises");
+                Console.WriteLine();
+                List<string> studentsAssignedExercises = new List<string>();
 
+                foreach (Exercise exercise in student.CurrentExercises)
+                {
+                    // Console.WriteLine(exercise.Name);
+                    studentsAssignedExercises.Add(exercise.Name);
 
+                }
+                Console.WriteLine($"{student.CohortNumber.Name} {student.FirstName} {student.LastName} Exercises ToDo: {String.Join(", ", studentsAssignedExercises)}");
 
+            }
 
 
             Console.ReadKey();

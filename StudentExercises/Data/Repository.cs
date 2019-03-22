@@ -490,18 +490,30 @@ namespace StudentExercises.Data
             //HEERERERERERERE---------------------------------------------------
             foreach (Student student in studentsByCohort)
             {
+                string fullName = $"{student.FirstName} {student.LastName}";
                 Console.WriteLine($"{student.FirstName} {student.CohortNumber.Name}");
-            };
-
+                if (student.CurrentExercises.Exists(ex => ex.Id ==exercise.Id))
+                {
+                    Console.WriteLine($" {fullName} has already been assigned {exercise.Name}");
+                }
+                else
+                {
+                    Console.WriteLine($" {fullName} has been assigned {exercise.Name}");
             using (SqlConnection conn = Connection)
             {
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = "";
+                    cmd.CommandText = @"INSERT INTO AssignedExercise (ExerciseId, StudentId) VALUES (@exerciseId, @studentId)";
+                    cmd.Parameters.Add(new SqlParameter("@exerciseId", exercise.Id));
+                    cmd.Parameters.Add(new SqlParameter("@studentId", student.Id));
                     cmd.ExecuteNonQuery();
                 }
             }
+                };
+            };
+
+
         }
         }
 
